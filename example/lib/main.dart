@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 Seth King. All rights reserved.
+ */
+
 import 'package:flutter/material.dart';
 import 'package:force_upgrader/force_upgrader.dart';
 
@@ -8,7 +12,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
