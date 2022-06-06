@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 Seth King. All rights reserved.
+ */
+
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -7,9 +11,13 @@ import 'package:force_upgrader/src/store_urls.dart';
 import 'package:force_upgrader/src/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+/// THe radius of the upgrade dialog
 const _radius = 16.0;
+
+/// The rotational angle of the upgrade dialog
 const _angle = 40;
 
+/// Default upgrade dialog that shows when upgrade conditions are met
 class UpgradeDialog extends StatelessWidget {
   const UpgradeDialog(
       {Key? key,
@@ -18,8 +26,13 @@ class UpgradeDialog extends StatelessWidget {
       required this.onDialogDismissed})
       : super(key: key);
 
+  /// The store urls of the app
   final StoreUrls storeUrls;
+
+  /// The details of the upgrade dialog
   final DialogDetails dialogDetails;
+
+  /// The callback to call when the upgrade dialog's skip button is pressed
   final VoidCallback onDialogDismissed;
 
   @override
@@ -76,6 +89,7 @@ class UpgradeDialog extends StatelessWidget {
     );
   }
 
+  /// Launches the appropriate appstore url of the current app and platform
   Future goToStore(StoreUrls urls) async {
     Uri? url;
 

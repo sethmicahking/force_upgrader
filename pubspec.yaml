@@ -11,8 +11,13 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # You can use the PackageInfo to query information about the application package.
   package_info_plus: ^1.4.2
+
+  # A Flutter plugin for launching a URL.
   url_launcher: ^6.1.2
+
+  # A dart library providing a Version object for comparing and incrementing version numbers in compliance with the Semantic Versioning spec at http://semver.org/
   version: ^2.0.0
 
 dev_dependencies:
