@@ -50,7 +50,7 @@ class ExampleHome extends StatelessWidget {
   }
 }
 ```
-![image](example_screenshot.png)
+![image](https://github.com/sethmicahking/force_upgrader/raw/e0157f0aa1b7e7c8603d52f7e23dc9eebb27378a/example_screenshot.png)
 Force Upgrader's constructor takes the following parameters
 * child: The child to return under Force Upgrader
 * upgradeDialog: An optional custom dialog

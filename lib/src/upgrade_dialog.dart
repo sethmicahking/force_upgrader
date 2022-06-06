@@ -2,14 +2,13 @@
  * Copyright (c) 2022 Seth King. All rights reserved.
  */
 
-import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:force_upgrader/src/dialog_details.dart';
+import 'package:force_upgrader/src/launcher_helper.dart';
 import 'package:force_upgrader/src/store_urls.dart';
 import 'package:force_upgrader/src/strings.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 /// THe radius of the upgrade dialog
 const _radius = 16.0;
@@ -67,13 +66,18 @@ class UpgradeDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       ElevatedButton(
+                          key: const Key('upgrade-button'),
                           onPressed: () {
-                            goToStore(storeUrls);
+                            final uri =
+                                LauncherHelper.getStoreUri(urls: storeUrls);
+                            assert(uri != null);
+                            LauncherHelper.goToStore(uri: uri!);
                           },
                           child: Text(dialogDetails.updateButtonText ??
                               kDownloadUpdate)),
                       if (dialogDetails.allowSkip)
                         ElevatedButton(
+                            key: const Key('skip-button'),
                             onPressed: () {
                               Navigator.pop(context);
                               onDialogDismissed();
@@ -87,27 +91,5 @@ class UpgradeDialog extends StatelessWidget {
             ),
           )),
     );
-  }
-
-  /// Launches the appropriate appstore url of the current app and platform
-  Future goToStore(StoreUrls urls) async {
-    Uri? url;
-
-    if (Platform.isAndroid && urls.androidPackageName != null) {
-      url = Uri.parse(
-          'https://play.google.com/store/apps/details?id=${urls.androidPackageName}');
-    } else if (Platform.isIOS && urls.iOSAppStoreId != null) {
-      url = Uri.parse('https://apps.apple.com/app/id${urls.iOSAppStoreId}');
-    } else if (Platform.isMacOS && urls.macOSAppStoreId != null) {
-      url = Uri.parse(
-          'https://apps.apple.com/ru/app/g-app-launcher/id${urls.macOSAppStoreId}');
-    } else if (Platform.isWindows && urls.windowsStoreId != null) {
-      url = Uri.parse(
-          'https://apps.microsoft.com/store/detail/${urls.windowsStoreId}');
-    } else if (urls.defaultStoreUrl != null) {}
-
-    if (url == null || !await launchUrl(url)) {
-      throw 'Store details or url not found';
-    }
   }
 }
