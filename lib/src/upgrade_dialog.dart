@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:force_upgrader/src/dialog_details.dart';
 import 'package:force_upgrader/src/store_urls.dart';
 import 'package:force_upgrader/src/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -10,9 +11,16 @@ const _radius = 16.0;
 const _angle = 40;
 
 class UpgradeDialog extends StatelessWidget {
-  const UpgradeDialog({Key? key, required this.storeUrls}) : super(key: key);
+  const UpgradeDialog(
+      {Key? key,
+      required this.storeUrls,
+      required this.dialogDetails,
+      required this.onDialogDismissed})
+      : super(key: key);
 
   final StoreUrls storeUrls;
+  final DialogDetails dialogDetails;
+  final VoidCallback onDialogDismissed;
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +44,31 @@ class UpgradeDialog extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(kUpdateAvailableTitle,
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(dialogDetails.dialogHeadingText ?? kUpdateAvailableTitle,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 4.0),
-                  const Text(kUpdateAvailableBody),
+                  Text(dialogDetails.dialogBodyText ?? kUpdateAvailableBody),
                   const SizedBox(height: 16.0),
-                  ElevatedButton(
-                      onPressed: () {
-                        goToStore(storeUrls);
-                      },
-                      child: const Text(kDownloadUpdate))
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            goToStore(storeUrls);
+                          },
+                          child: Text(dialogDetails.updateButtonText ??
+                              kDownloadUpdate)),
+                      if (dialogDetails.allowSkip)
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              onDialogDismissed();
+                            },
+                            child: Text(
+                                dialogDetails.skipButtonText ?? kSkipVersion))
+                    ],
+                  )
                 ],
               ),
             ),
@@ -70,7 +93,7 @@ class UpgradeDialog extends StatelessWidget {
     } else if (urls.defaultStoreUrl != null) {}
 
     if (url == null || !await launchUrl(url)) {
-      debugPrint("Could not launch url or url is null");
+      throw 'Store details or url not found';
     }
   }
 }
