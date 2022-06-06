@@ -1,6 +1,6 @@
 name: force_upgrader
 description: Flutter package to force users to upgrade past a minimum version.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/sethmicahking/force_upgrader
 
 environment:
