@@ -2,6 +2,7 @@
  * Copyright (c) 2022 Seth King. All rights reserved.
  */
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:force_upgrader/src/dialog_details.dart';
 import 'package:force_upgrader/src/store_urls.dart';
